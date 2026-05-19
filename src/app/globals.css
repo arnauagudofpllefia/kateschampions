@@ -1,26 +1,183 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --brand-bg: #060d18;
+  --brand-text: #e8edf8;
+  --brand-accent: #f8d66d;
+  --panel: #0f1a2f;
+  --panel-soft: #13233f;
+  --line: rgba(255, 255, 255, 0.16);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-brand-bg: var(--brand-bg);
+  --color-brand-text: var(--brand-text);
+  --font-title: var(--font-title);
+  --font-sans: var(--font-body);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  background: var(--brand-bg);
+  color: var(--brand-text);
+  font-family: var(--font-body), sans-serif;
+}
+
+a,
+button {
+  transition: all 180ms ease;
+}
+
+.page-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 12% 18%, #1f3156 0, transparent 44%),
+    radial-gradient(circle at 88% 8%, #5c4514 0, transparent 34%),
+    radial-gradient(circle at 75% 70%, #143966 0, transparent 42%),
+    linear-gradient(160deg, #050b14 0%, #0a1324 42%, #142849 100%);
+}
+
+.hero-panel {
+  background:
+    linear-gradient(132deg, rgba(18, 35, 66, 0.9), rgba(44, 35, 16, 0.74)),
+    var(--panel);
+  box-shadow: 0 28px 56px rgba(0, 0, 0, 0.34);
+  animation: panel-enter 550ms ease-out both;
+}
+
+.pro-shell {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding: 2.25rem 1rem 3.2rem;
+}
+
+.section-card {
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(5px);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
+}
+
+.inner-panel {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.8rem;
+  background: linear-gradient(180deg, #10203a, #0b1730);
+}
+
+.page-title {
+  font-family: var(--font-title), sans-serif;
+  letter-spacing: 0.03em;
+  font-size: clamp(2.2rem, 3.3vw, 3.2rem);
+  line-height: 0.95;
+}
+
+.subtle-text {
+  color: rgba(226, 236, 255, 0.76);
+}
+
+.kpi-value {
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.badge-pro {
+  border-radius: 999px;
+  border: 1px solid rgba(248, 214, 109, 0.52);
+  background: rgba(248, 214, 109, 0.14);
+  color: #f8d66d;
+  padding: 0.23rem 0.72rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  border-radius: 999px;
+  background: linear-gradient(120deg, #f8d66d, #e9bc3f);
+  color: #0a1120;
+  font-weight: 800;
+  padding: 0.57rem 1.2rem;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.btn-ghost {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #e9edf8;
+  font-weight: 700;
+  padding: 0.57rem 1.2rem;
+}
+
+.btn-ghost:hover {
+  border-color: rgba(248, 214, 109, 0.6);
+  color: #f8d66d;
+}
+
+.table-pro thead {
+  color: #f8d66d;
+  font-size: 0.73rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.table-pro tbody tr {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.table-pro td,
+.table-pro th {
+  padding: 0.65rem 0.45rem;
+}
+
+.form-shell {
+  border: 1px solid var(--line);
+  border-radius: 1.2rem;
+  background: linear-gradient(165deg, rgba(19, 36, 66, 0.95), rgba(15, 24, 43, 0.88));
+  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.35);
+}
+
+.input-pro {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(180deg, #0f1c35, #0c162d);
+  padding: 0.58rem 0.82rem;
+  outline: none;
+}
+
+.input-pro:focus {
+  border-color: rgba(248, 214, 109, 0.8);
+  box-shadow: 0 0 0 3px rgba(248, 214, 109, 0.16);
+}
+
+main section,
+main article {
+  animation: panel-enter 450ms ease-out both;
+}
+
+@keyframes panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 640px) {
+  .pro-shell {
+    padding-inline: 1.5rem;
+  }
 }

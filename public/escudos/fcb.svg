@@ -1,0 +1,5 @@
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Escudo FC Barcelona">
+  <circle cx="48" cy="48" r="45" fill="#1d2b66" stroke="#f3c04e" stroke-width="4"/>
+  <path d="M20 52h56v22H20z" fill="#8f1837"/>
+  <text x="48" y="56" text-anchor="middle" fill="#f3c04e" font-size="24" font-family="Arial, sans-serif" font-weight="700">FCB</text>
+</svg>
