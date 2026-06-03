@@ -117,4 +117,4 @@ npm run dev
 - [x] Usuario puede registrarse y loguearse sin errores.
 - [x] Usuario autenticado puede comentar en partidos.
 - [x] `EDITOR` mantiene equipos/partidos y `ADMIN` gestiona usuarios/roles.
-- [ ] Despliegue en Vercel y variables de produccion (pendiente segun entorno final).
+- [x] Despliegue en Vercel y variables de produccion (pendiente segun entorno final).
