@@ -17,7 +17,7 @@ export default async function EquiposPage() {
           <Link
             key={equipo.id}
             href={`/equipos/${equipo.id}`}
-            className="section-card group p-5 transition hover:-translate-y-1 hover:border-[#f8d66d]/60"
+            className="section-card group rounded-xl border border-white/35 bg-white/5 p-5 transition hover:-translate-y-1 hover:border-[#f8d66d]/70"
           >
             <div className="flex items-start justify-between">
               <h2 className="text-xl font-bold text-slate-100 group-hover:text-[#f8d66d]">

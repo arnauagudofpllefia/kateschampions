@@ -32,7 +32,7 @@ export function SiteHeader() {
 
   return (
     <header className="header-shell sticky top-0 z-30">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <div className="flex w-full items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-2 text-[#f8d66d]">
           <Image
             src="/images/infochampions-logo.svg"
@@ -111,7 +111,7 @@ export function SiteHeader() {
       </div>
 
       {mobileOpen ? (
-        <div className="mx-auto w-full max-w-6xl px-4 pb-3 sm:px-6 md:hidden">
+        <div className="w-full px-4 pb-3 sm:px-6 md:hidden">
           <div className="mobile-menu-panel p-3">
             <nav className="grid gap-2">
               {headerLinks.map((link) => (

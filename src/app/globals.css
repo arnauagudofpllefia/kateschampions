@@ -45,10 +45,8 @@ button {
 }
 
 .hero-panel {
-  background:
-    linear-gradient(132deg, rgba(17, 35, 67, 0.94), rgba(72, 52, 16, 0.8)),
-    var(--panel);
-  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.42);
+  background: transparent;
+  box-shadow: none;
   animation: panel-enter 550ms ease-out both;
 }
 
@@ -77,23 +75,28 @@ button {
 
 .pro-shell {
   width: 100%;
-  max-width: 1160px;
-  margin-inline: auto;
+  max-width: none;
+  margin-inline: 0;
   padding: 2.4rem 1rem 3.4rem;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .section-card {
   border: 0;
-  border-radius: 1.1rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
-  backdrop-filter: blur(4px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
 }
 
 .inner-panel {
   border: 0;
-  border-radius: 0.8rem;
-  background: linear-gradient(180deg, rgba(17, 34, 63, 0.74), rgba(14, 26, 49, 0.72));
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .page-title {
@@ -171,8 +174,8 @@ button {
 .form-shell {
   border: 0;
   border-radius: 1.2rem;
-  background: linear-gradient(165deg, rgba(20, 40, 73, 0.96), rgba(11, 21, 41, 0.9));
-  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.26);
+  background: transparent;
+  box-shadow: none;
 }
 
 .input-pro {
