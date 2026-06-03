@@ -3,12 +3,10 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/";
 
   const [email, setEmail] = useState("demo@champions.local");
   const [password, setPassword] = useState("demo123");
@@ -19,6 +17,11 @@ export default function LoginPage() {
     event.preventDefault();
     setLoading(true);
     setError(null);
+
+    const callbackUrl =
+      typeof window !== "undefined"
+        ? new URLSearchParams(window.location.search).get("callbackUrl") ?? "/"
+        : "/";
 
     const result = await signIn("credentials", {
       email,

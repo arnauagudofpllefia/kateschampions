@@ -15,17 +15,24 @@ type MatchCommentRow = {
   user_id: string;
   content: string;
   created_at: string;
-  users: {
-    name: string;
-  } | null;
+  users:
+    | {
+      name: string;
+    }
+    | {
+      name: string;
+    }[]
+    | null;
 };
 
 function mapCommentRow(row: MatchCommentRow): MatchComment {
+  const user = Array.isArray(row.users) ? row.users[0] : row.users;
+
   return {
     id: row.id,
     matchId: row.match_id,
     userId: row.user_id,
-    userName: row.users?.name ?? "Usuario",
+    userName: user?.name ?? "Usuario",
     content: row.content,
     createdAt: row.created_at,
   };

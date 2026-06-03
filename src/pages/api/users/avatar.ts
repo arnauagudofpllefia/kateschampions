@@ -27,7 +27,7 @@ type MulterRequest = NextApiRequest & {
 function runMiddleware(
   req: NextApiRequest,
   res: NextApiResponse,
-  fn: (req: NextApiRequest, res: NextApiResponse, callback: (result?: unknown) => void) => void,
+  fn: (...args: any[]) => void,
 ) {
   return new Promise((resolve, reject) => {
     fn(req, res, (result?: unknown) => {
