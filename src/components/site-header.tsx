@@ -32,8 +32,8 @@ export function SiteHeader() {
 
   return (
     <header className="header-shell sticky top-0 z-30">
-      <div className="flex w-full items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center gap-2 text-[#f8d66d]">
+      <div className="mx-auto flex w-full max-w-295 items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-7">
+        <Link href="/" className="flex items-center gap-2 text-(--brand-accent-2)">
           <Image
             src="/images/infochampions-logo.svg"
             alt="InfoChampions logo"
@@ -42,10 +42,10 @@ export function SiteHeader() {
             className="h-8 w-8"
             priority
           />
-          <span className="font-title text-2xl leading-none tracking-wider">InfoChampions</span>
+          <span className="font-title text-2xl leading-none tracking-wide">InfoChampions</span>
         </Link>
 
-        <nav className="hidden items-center gap-2 md:flex">
+        <nav className="hidden items-center gap-1 md:flex">
           {headerLinks.map((link) => (
             <Link
               key={link.href}
@@ -53,7 +53,7 @@ export function SiteHeader() {
               className={`nav-chip ${
                 pathname === link.href
                   ? "nav-chip-active"
-                  : "hover:text-[#f5d48a]"
+                  : "hover:text-(--brand-accent-2)"
               }`}
             >
               {link.label}
@@ -66,7 +66,7 @@ export function SiteHeader() {
             <>
               <Link
                 href="/perfil"
-                className="group relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-white/25 bg-[#f8d66d]/15"
+                className="group relative inline-flex h-10 w-10 items-center justify-center overflow-hidden rounded-md border border-white/25 bg-white/5"
                 aria-label="Ir al perfil"
                 title={`${session.user.name} (${session.user.role.toUpperCase()})`}
               >
@@ -84,16 +84,16 @@ export function SiteHeader() {
                 onClick={() => signOut({ callbackUrl: "/" })}
                 className="btn-primary"
               >
-                Logout
+                Salir
               </button>
             </>
           ) : (
             <>
-              <Link href="/login" className="rounded-full px-3 py-1 hover:text-[#f8d66d]">
+              <Link href="/login" className="btn-ghost">
                 Login
               </Link>
               <Link href="/register" className="btn-primary">
-                Register
+                Registro
               </Link>
             </>
           )}
@@ -103,6 +103,7 @@ export function SiteHeader() {
             className="nav-chip md:hidden"
             onClick={() => setMobileOpen((value) => !value)}
             aria-expanded={mobileOpen}
+            aria-controls="main-mobile-navigation"
             aria-label="Abrir menu"
           >
             Menu
@@ -111,9 +112,9 @@ export function SiteHeader() {
       </div>
 
       {mobileOpen ? (
-        <div className="w-full px-4 pb-3 sm:px-6 md:hidden">
+        <div className="mx-auto w-full max-w-295 px-4 pb-3 sm:px-6 lg:px-7 md:hidden">
           <div className="mobile-menu-panel p-3">
-            <nav className="grid gap-2">
+            <nav id="main-mobile-navigation" className="grid gap-2" aria-label="Navegacion principal movil">
               {headerLinks.map((link) => (
                 <Link
                   key={link.href}
@@ -121,8 +122,8 @@ export function SiteHeader() {
                   onClick={() => setMobileOpen(false)}
                   className={`rounded-lg px-3 py-2 text-sm font-semibold ${
                     pathname === link.href
-                      ? "bg-[#f5c35f]/14 text-[#f5d48a]"
-                      : "text-slate-100"
+                      ? "border border-[rgba(200,154,66,0.38)] bg-[rgba(200,154,66,0.11)] text-(--brand-accent-2)"
+                      : "border border-transparent text-slate-100"
                   }`}
                 >
                   {link.label}

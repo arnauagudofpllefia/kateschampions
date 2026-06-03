@@ -14,7 +14,7 @@ export default async function PartidosPage() {
       <div className="mt-8 space-y-6">
         {dias.map((dia) => (
           <section key={dia} className="section-card p-5">
-            <h2 className="font-title text-3xl text-[#f8d66d]">{dia}</h2>
+            <h2 className="font-title text-3xl text-(--brand-accent-2)">{dia}</h2>
             <div className="mt-4 grid gap-3">
               {partidosPorDia[dia].map((partido) => (
                 <article key={partido.id} className="inner-panel p-4 text-slate-100">
@@ -35,7 +35,7 @@ export default async function PartidosPage() {
                       ? `Resultado final: ${partido.homeScore} - ${partido.awayScore}`
                       : "Partido pendiente"}
                   </p>
-                  <Link href={`/partidos/${partido.id}`} className="mt-3 inline-block text-sm font-semibold text-[#f8d66d] hover:underline">
+                  <Link href={`/partidos/${partido.id}`} className="mt-3 inline-block text-sm font-semibold text-(--brand-accent-2) hover:underline">
                     Ver detalle y comentarios
                   </Link>
                 </article>

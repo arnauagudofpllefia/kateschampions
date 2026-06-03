@@ -20,13 +20,20 @@ export function MatchComments({ matchId, initialComments }: MatchCommentsProps) 
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const nextContent = content.trim();
+
+    if (!nextContent) {
+      setError("Escribe un comentario antes de publicar");
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     const response = await fetch(`/api/partidos/${matchId}/comentarios`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content }),
+      body: JSON.stringify({ content: nextContent }),
     });
 
     if (!response.ok) {
@@ -46,36 +53,44 @@ export function MatchComments({ matchId, initialComments }: MatchCommentsProps) 
 
   return (
     <section className="section-card p-5 text-slate-100">
-      <h2 className="font-title text-3xl text-[#f8d66d]">Comentarios</h2>
+      <h2 className="font-title text-3xl text-(--brand-accent-2)">Comentarios</h2>
       <p className="subtle-text mt-1 text-sm">Debate del partido para usuarios registrados.</p>
 
       {session?.user ? (
-        <form onSubmit={onSubmit} className="mt-4 space-y-3">
+        <form onSubmit={onSubmit} className="mt-4 space-y-3" aria-busy={loading}>
           <textarea
             value={content}
             onChange={(event) => setContent(event.target.value)}
             className="input-pro min-h-24"
             placeholder="Comparte tu opinion del partido..."
             maxLength={500}
+            disabled={loading}
             required
           />
-          {error ? <p className="text-sm text-rose-300">{error}</p> : null}
-          <button type="submit" className="btn-primary" disabled={loading}>
+          <div className="flex items-center justify-between gap-3">
+            <p className="subtle-text text-xs">{content.length}/500 caracteres</p>
+          </div>
+          {error ? (
+            <p className="status-note error-note text-sm" role="alert" aria-live="polite">
+              {error}
+            </p>
+          ) : null}
+          <button type="submit" className="btn-primary" disabled={loading || content.trim().length === 0}>
             {loading ? "Publicando..." : "Publicar comentario"}
           </button>
         </form>
       ) : (
-        <p className="mt-4 text-sm text-slate-300">Inicia sesion para comentar este partido.</p>
+        <p className="status-note mt-4 text-sm text-slate-300">Inicia sesion para comentar este partido.</p>
       )}
 
       <div className="mt-6 space-y-3">
         {comments.length === 0 ? (
-          <p className="text-sm text-slate-300">Aun no hay comentarios.</p>
+          <p className="empty-note text-sm text-slate-300">Aun no hay comentarios.</p>
         ) : (
           comments.map((comment) => (
             <article key={comment.id} className="inner-panel p-3">
               <header className="flex items-center justify-between gap-3">
-                <p className="font-semibold text-[#f8d66d]">{comment.userName}</p>
+                <p className="font-semibold text-(--brand-accent-2)">{comment.userName}</p>
                 <time className="text-xs text-slate-400">
                   {new Date(comment.createdAt).toLocaleString("es-ES")}
                 </time>

@@ -17,10 +17,10 @@ export default async function EquiposPage() {
           <Link
             key={equipo.id}
             href={`/equipos/${equipo.id}`}
-            className="section-card group rounded-xl border border-white/35 bg-white/5 p-5 transition hover:-translate-y-1 hover:border-[#f8d66d]/70"
+            className="section-card group p-5 transition hover:-translate-y-1 hover:border-[rgba(200,154,66,0.7)]"
           >
             <div className="flex items-start justify-between">
-              <h2 className="text-xl font-bold text-slate-100 group-hover:text-[#f8d66d]">
+              <h2 className="text-xl font-semibold text-slate-100 group-hover:text-(--brand-accent-2)">
                 <TeamName name={equipo.name} crest={equipo.crest} />
               </h2>
               <span className="badge-pro">

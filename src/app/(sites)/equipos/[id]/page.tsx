@@ -22,11 +22,11 @@ export default async function EquipoDetallePage({ params }: Props) {
 
   return (
     <main className="pro-shell max-w-5xl">
-      <Link href="/equipos" className="text-sm font-semibold text-[#f8d66d] hover:underline">
+      <Link href="/equipos" className="text-sm font-semibold text-(--brand-accent-2) hover:underline">
         Volver a equipos
       </Link>
 
-      <section className="hero-panel mt-4 rounded-3xl border border-white/20 p-6">
+      <section className="hero-panel mt-4 rounded-2xl p-6">
         <h1 className="page-title text-slate-100">
           <TeamName name={equipo.name} crest={equipo.crest} size="lg" className="text-inherit" />
         </h1>
@@ -66,7 +66,7 @@ export default async function EquipoDetallePage({ params }: Props) {
                   {partido.day} · {partido.time}
                 </span>
               </div>
-              <p className="mt-2 text-sm text-[#f8d66d]">
+              <p className="mt-2 text-sm text-(--brand-accent-2)">
                 {partido.status === "played"
                   ? `Resultado: ${partido.homeScore} - ${partido.awayScore}`
                   : "Pendiente"}

@@ -73,6 +73,7 @@ export default async function AdminBackofficePage() {
       <p className="subtle-text text-sm">Gestion de usuarios y roles.</p>
 
       <section className="section-card p-5 text-slate-100">
+        <h2 className="font-title text-3xl text-(--brand-accent-2)">Usuarios</h2>
         <div className="mt-2 space-y-3">
           {users.length === 0 ? (
             <p className="inner-panel p-4 text-sm text-slate-300">No hay usuarios disponibles para gestionar.</p>
@@ -81,7 +82,7 @@ export default async function AdminBackofficePage() {
             <form key={user.id} action={updateRoleAction} className="inner-panel flex flex-wrap items-end justify-between gap-3 p-4">
               <input type="hidden" name="id" value={user.id} />
               <div>
-                <p className="font-semibold text-[#f8d66d]">{user.name}</p>
+                <p className="font-semibold text-(--brand-accent-2)">{user.name}</p>
                 <p className="text-sm text-slate-300">{user.email}</p>
               </div>
               <div className="flex items-end gap-2">

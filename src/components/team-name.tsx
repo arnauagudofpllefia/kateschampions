@@ -18,7 +18,7 @@ export function TeamName({ name, crest, size = "md", className = "" }: TeamNameP
         alt={`Escudo de ${name}`}
         width={logoSize}
         height={logoSize}
-        className="border border-white/20 bg-white/5 object-contain p-0.5"
+        className="rounded-sm border border-white/20 bg-white/5 object-contain p-0.5"
       />
       <span>{name}</span>
     </span>

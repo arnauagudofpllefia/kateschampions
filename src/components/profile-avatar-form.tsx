@@ -47,7 +47,7 @@ export function ProfileAvatarForm({ avatarUrl, displayName }: ProfileAvatarFormP
   }
 
   return (
-    <form onSubmit={onSubmit} className="section-card space-y-4 p-6 text-slate-100">
+    <form onSubmit={onSubmit} className="section-card space-y-4 p-6 text-slate-100" aria-busy={loading}>
       <div className="flex items-center gap-4">
         {previewUrl ? (
           // Blob/object URLs for local preview are not supported by next/image.
@@ -58,13 +58,13 @@ export function ProfileAvatarForm({ avatarUrl, displayName }: ProfileAvatarFormP
             className="h-20 w-20 rounded-full border border-white/25 object-cover"
           />
         ) : (
-          <div className="flex h-20 w-20 items-center justify-center rounded-full border border-white/25 bg-[#f8d66d]/20 text-2xl font-bold text-[#f8d66d]">
+          <div className="flex h-20 w-20 items-center justify-center rounded-md border border-white/25 bg-[rgba(200,154,66,0.16)] text-2xl font-bold text-(--brand-accent-2)">
             {displayName.slice(0, 1).toUpperCase()}
           </div>
         )}
 
         <div>
-          <p className="font-title text-3xl text-[#f8d66d]">Tu avatar</p>
+          <p className="font-title text-3xl text-(--brand-accent-2)">Tu avatar</p>
           <p className="subtle-text text-sm">Sube una imagen desde tu ordenador (max 2MB).</p>
         </div>
       </div>
@@ -74,13 +74,20 @@ export function ProfileAvatarForm({ avatarUrl, displayName }: ProfileAvatarFormP
         name="avatar"
         accept="image/*"
         className="input-pro"
+        disabled={loading}
         required
         onChange={(event) => onFileChange(event.target.files?.[0])}
       />
 
-      {error ? <p className="text-sm text-rose-300">{error}</p> : null}
+      {error ? (
+        <p className="status-note error-note text-sm" role="alert" aria-live="polite">
+          {error}
+        </p>
+      ) : null}
 
-      <button type="submit" disabled={loading} className="btn-primary disabled:opacity-60">
+      {loading ? <p className="status-note subtle-text text-xs">Subiendo imagen...</p> : null}
+
+      <button type="submit" disabled={loading} className="btn-primary">
         {loading ? "Subiendo..." : "Guardar avatar"}
       </button>
     </form>

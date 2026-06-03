@@ -39,7 +39,7 @@ export default function LoginPage() {
 
   return (
     <main className="pro-shell flex max-w-md flex-1 items-center">
-      <form onSubmit={onSubmit} className="form-shell w-full p-6 text-slate-100">
+      <form onSubmit={onSubmit} className="form-shell w-full p-6 text-slate-100" aria-busy={loading}>
         <h1 className="page-title text-4xl text-slate-100">Login</h1>
         <p className="subtle-text mt-1 text-sm">Accede para guardar tu sesion.</p>
 
@@ -49,6 +49,8 @@ export default function LoginPage() {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           className="input-pro mt-2"
+          autoComplete="email"
+          disabled={loading}
           required
         />
 
@@ -58,22 +60,28 @@ export default function LoginPage() {
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           className="input-pro mt-2"
+          autoComplete="current-password"
+          disabled={loading}
           required
         />
 
-        {error ? <p className="mt-3 text-sm text-rose-300">{error}</p> : null}
+        {error ? (
+          <p className="status-note error-note mt-3 text-sm" role="alert" aria-live="polite">
+            {error}
+          </p>
+        ) : null}
 
         <button
           type="submit"
           disabled={loading}
-          className="btn-primary mt-6 w-full disabled:opacity-50"
+          className="btn-primary mt-6 w-full"
         >
           {loading ? "Entrando..." : "Entrar"}
         </button>
 
         <p className="mt-4 text-sm text-slate-300">
           No tienes cuenta?{" "}
-          <Link href="/register" className="font-semibold text-[#f8d66d] hover:underline">
+          <Link href="/register" className="font-semibold text-(--brand-accent-2) hover:underline">
             Registrate
           </Link>
         </p>

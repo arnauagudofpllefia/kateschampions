@@ -10,7 +10,7 @@ export default async function ClasificacionPage() {
       <p className="subtle-text mt-2">Formato liga con todos los equipos participantes.</p>
 
       <section className="section-card mt-8 overflow-x-auto p-4">
-        <table className="table-pro w-full min-w-[760px] text-left text-sm text-slate-200">
+        <table className="table-pro w-full min-w-190 text-left text-sm text-slate-200">
           <thead>
             <tr>
               <th className="px-2 py-3">Pos</th>
@@ -39,7 +39,7 @@ export default async function ClasificacionPage() {
                 <td className="px-2 py-3">{team.goalsFor}</td>
                 <td className="px-2 py-3">{team.goalsAgainst}</td>
                 <td className="px-2 py-3">{team.goalsFor - team.goalsAgainst}</td>
-                <td className="px-2 py-3 font-bold text-[#f8d66d]">{team.points}</td>
+                <td className="px-2 py-3 font-semibold text-(--brand-accent-2)">{team.points}</td>
               </tr>
             ))}
           </tbody>

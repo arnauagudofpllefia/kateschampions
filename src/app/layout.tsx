@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Space_Grotesk } from "next/font/google";
+import { Manrope, Oswald } from "next/font/google";
 import { AuthSessionProvider } from "@/components/providers/auth-session-provider";
 import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
-const titleFont = Bebas_Neue({
+const titleFont = Oswald({
   variable: "--font-title",
-  weight: "400",
+  weight: ["500", "600", "700"],
   subsets: ["latin"],
 });
 
-const bodyFont = Space_Grotesk({
+const bodyFont = Manrope({
   variable: "--font-body",
   subsets: ["latin"],
 });

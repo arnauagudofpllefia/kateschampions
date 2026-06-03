@@ -20,9 +20,9 @@ export default async function ResultadosPage() {
 
       <section className="mt-8 grid gap-4 md:grid-cols-3">
         {destacados.map((team, index) => (
-          <article key={team.id} className="hero-panel rounded-2xl border border-[#f8d66d]/45 p-4 text-slate-100">
-            <p className="text-xs uppercase tracking-[0.15em] text-[#f8d66d]">Destacado #{index + 1}</p>
-            <h2 className="mt-2 text-xl font-black">
+          <article key={team.id} className="hero-panel rounded-xl border-[rgba(200,154,66,0.45)] p-4 text-slate-100">
+            <p className="text-xs uppercase tracking-[0.12em] text-(--brand-accent-2)">Destacado #{index + 1}</p>
+            <h2 className="mt-2 text-xl font-semibold">
               <TeamName name={team.name} crest={team.crest} />
             </h2>
             <p className="subtle-text mt-1 text-sm">{team.country}</p>
@@ -33,7 +33,7 @@ export default async function ResultadosPage() {
 
       <section className="mt-8 grid gap-6 lg:grid-cols-2">
         <article className="section-card p-5">
-          <h3 className="text-xl font-bold text-slate-100">Ultimos resultados</h3>
+          <h3 className="text-xl font-semibold text-slate-100">Ultimos resultados</h3>
           <ul className="mt-4 space-y-2 text-slate-200">
             {ultimos.map((match) => (
               <li key={match.id} className="inner-panel p-3 text-sm">
@@ -53,7 +53,7 @@ export default async function ResultadosPage() {
         </article>
 
         <article className="section-card p-5">
-          <h3 className="text-xl font-bold text-slate-100">Proximos partidos</h3>
+          <h3 className="text-xl font-semibold text-slate-100">Proximos partidos</h3>
           <ul className="mt-4 space-y-2 text-slate-200">
             {proximos.map((match) => (
               <li key={match.id} className="inner-panel p-3 text-sm">
@@ -74,7 +74,7 @@ export default async function ResultadosPage() {
       </section>
 
       <section className="section-card mt-8 p-5">
-        <h3 className="text-xl font-bold text-slate-100">Clasificacion (Top 5)</h3>
+        <h3 className="text-xl font-semibold text-slate-100">Clasificacion (Top 5)</h3>
         <div className="mt-4 overflow-x-auto">
           <table className="table-pro w-full text-left text-sm text-slate-200">
             <thead>
