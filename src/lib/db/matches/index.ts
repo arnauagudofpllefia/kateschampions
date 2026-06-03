@@ -68,6 +68,26 @@ export async function leerPartidos(): Promise<PartidoEnriquecido[]> {
   return enriched;
 }
 
+export async function leerPartidoPorId(id: string): Promise<PartidoEnriquecido | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("matches")
+    .select("id,matchday,day,time,home_team_id,away_team_id,home_score,away_score,status")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    if (error.code === "PGRST116") {
+      return null;
+    }
+
+    throw new Error(`leerPartidoPorId: ${error.message}`);
+  }
+
+  const match = mapMatchRow(data as MatchRow);
+  return enriquecerPartido(match);
+}
+
 export async function leerPartidosPorDia(): Promise<Record<string, PartidoEnriquecido[]>> {
   const matches = await leerPartidos();
 

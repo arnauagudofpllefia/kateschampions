@@ -1,15 +1,13 @@
-import { randomUUID } from "node:crypto";
-import bcrypt from "bcryptjs";
 import type { AppUser, UserRole } from "@/lib/db/types";
 import { createClient } from "@/lib/supabase/server";
-
-const DEFAULT_ROLE: UserRole = "user";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 type UserRow = {
   id: string;
   name: string;
   email: string;
   password_hash: string;
+  avatar_url: string | null;
   role: UserRole;
   created_at: string;
 };
@@ -20,16 +18,17 @@ function mapUserRow(row: UserRow): AppUser {
     name: row.name,
     email: row.email,
     passwordHash: row.password_hash,
+    avatarUrl: row.avatar_url,
     role: row.role,
     createdAt: row.created_at,
   };
 }
 
 export async function leerUsuarios(): Promise<AppUser[]> {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("users")
-    .select("id,name,email,password_hash,role,created_at")
+    .select("id,name,email,password_hash,avatar_url,role,created_at")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -46,6 +45,25 @@ export async function leerUsuarioPorEmail(email: string): Promise<AppUser | null
   return users.find((user) => user.email.toLowerCase() === normalizedEmail) ?? null;
 }
 
+export async function leerUsuarioPorId(id: string): Promise<AppUser | null> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("users")
+    .select("id,name,email,password_hash,avatar_url,role,created_at")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    if (error.code === "PGRST116") {
+      return null;
+    }
+
+    throw new Error(`leerUsuarioPorId: ${error.message}`);
+  }
+
+  return mapUserRow(data as UserRow);
+}
+
 export async function crearUsuario(input: {
   name: string;
   email: string;
@@ -55,28 +73,11 @@ export async function crearUsuario(input: {
 
   const supabase = await createClient();
 
-  const passwordHash = await bcrypt.hash(input.password, 10);
-  const newUser: AppUser = {
-    id: randomUUID(),
-    name: input.name.trim(),
-    email: normalizedEmail,
-    passwordHash,
-    role: DEFAULT_ROLE,
-    createdAt: new Date().toISOString(),
-  };
-
-  const { data, error } = await supabase
-    .from("users")
-    .insert({
-      id: newUser.id,
-      name: newUser.name,
-      email: newUser.email,
-      password_hash: newUser.passwordHash,
-      role: newUser.role,
-      created_at: newUser.createdAt,
-    })
-    .select("id,name,email,role,created_at")
-    .single();
+  const { data, error } = await supabase.rpc("create_user", {
+    p_name: input.name.trim(),
+    p_email: normalizedEmail,
+    p_password: input.password,
+  });
 
   if (error) {
     if (error.code === "23505") {
@@ -86,12 +87,20 @@ export async function crearUsuario(input: {
     throw new Error(`crearUsuario: ${error.message}`);
   }
 
+  const insertedUser = Array.isArray(data) ? data[0] : data;
+  if (!insertedUser) {
+    throw new Error("crearUsuario: no se pudo crear el usuario");
+  }
+
+  const mappedUser = mapUserRow(insertedUser as UserRow);
+
   return {
-    id: data.id,
-    name: data.name,
-    email: data.email,
-    role: data.role,
-    createdAt: data.created_at,
+    id: mappedUser.id,
+    name: mappedUser.name,
+    email: mappedUser.email,
+    avatarUrl: mappedUser.avatarUrl,
+    role: mappedUser.role,
+    createdAt: mappedUser.createdAt,
   };
 }
 
@@ -111,10 +120,17 @@ export async function validarCredenciales(input: {
   }
 
   const user = Array.isArray(data) ? data[0] : data;
-  if (!user) return null;
+  if (!user) {
+    return null;
+  }
 
   const mappedUser = mapUserRow(user as UserRow);
-  const safeUser = { ...mappedUser };
-  delete safeUser.passwordHash;
-  return safeUser;
+  return {
+    id: mappedUser.id,
+    name: mappedUser.name,
+    email: mappedUser.email,
+    avatarUrl: mappedUser.avatarUrl,
+    role: mappedUser.role,
+    createdAt: mappedUser.createdAt,
+  };
 }

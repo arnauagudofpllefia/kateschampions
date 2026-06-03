@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { leerPartidosPorDia } from "@/lib/db/matches";
 import { TeamName } from "@/components/team-name";
 
@@ -34,6 +35,9 @@ export default async function PartidosPage() {
                       ? `Resultado final: ${partido.homeScore} - ${partido.awayScore}`
                       : "Partido pendiente"}
                   </p>
+                  <Link href={`/partidos/${partido.id}`} className="mt-3 inline-block text-sm font-semibold text-[#f8d66d] hover:underline">
+                    Ver detalle y comentarios
+                  </Link>
                 </article>
               ))}
             </div>

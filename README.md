@@ -1,159 +1,120 @@
-# Champions SaaS
+# Champions Hub (IA7)
 
-Minimal **multi-user SaaS** for browsing **teams** and **matches**, posting **match comments**, and managing content through **role-based backoffice** panels (`EDITOR`, `ADMIN`). Built as the **M0613 IA7** deliverable (block *Creació d'un SaaS*, sessions S16–S20).
+Aplicacion SaaS multiusuario de Champions con:
 
-**Live demo:** https://YOUR-APP.vercel.app
-**Repository:** https://github.com/YOUR_USER/champions-saas
+- Catalogo publico de equipos y partidos.
+- Registro/login con Auth.js (credenciales).
+- Comentarios en detalle de partido para usuarios autenticados.
+- Backoffice por rol: `EDITOR` (equipos/partidos) y `ADMIN` (usuarios/roles).
 
-![Home / teams listing](./docs/screenshots/teams.png)
+## Stack
 
-## Why this project
+- Next.js (App Router), React, TypeScript.
+- Supabase Postgres (migraciones SQL con Supabase CLI).
+- Auth.js (NextAuth, estrategia JWT + Credentials).
+- Zod para validacion de mutaciones.
+- Tailwind CSS.
 
-Fans and editors need a single place to **publish** Champions-style fixtures and media, while **registered users** can discuss matches. The app separates **public catalog**, **social features**, and **internal tooling** with clear authorization — a common pattern in real B2B/B2C SaaS products.
+## Funcionalidades
 
-## Features
+### Publico
 
-### Public
+- Listado de equipos.
+- Listado de partidos por dia.
+- Resultados y clasificacion.
+- Detalle de partido (`/partidos/[id]`).
 
-- Browse **teams** and **matches** with real data from PostgreSQL (via Prisma).
-- **Match detail** page with navigation between related entities.
+### Usuarios autenticados
 
-### Authenticated users
+- Registro (`/register`) y login (`/login`).
+- Publicar comentarios en el detalle de partido.
 
-- **Sign up** and **sign in** (Auth.js).
-- Post **comments** on matches (social layer).
+### Backoffice por roles
 
-### Backoffice
+- `EDITOR`: mantenimiento de equipos (nombre, escudo, entrenador, estadio) y partidos (fecha, hora, estado y marcador).
+- `ADMIN`: gestion de roles de usuario (`user`, `editor`, `admin`).
 
-- **`EDITOR`**: maintain teams, matches, and related media (shields, match images).
-- **`ADMIN`**: user and **role** management (`USER`, `EDITOR`, `ADMIN`).
+## Rutas principales
 
-### Product / engineering
+- `/`
+- `/equipos`
+- `/equipos/[id]`
+- `/partidos`
+- `/partidos/[id]`
+- `/resultados`
+- `/clasificacion`
+- `/login`
+- `/register`
+- `/backoffice/editor`
+- `/backoffice/admin`
 
-- **User stories** implemented incrementally in **Scrum sprints** (US-01 … US-22 — see course backlog).
-- **Idempotent seed** for local demos.
-- **Supabase Storage** buckets for avatars, team logos, and match images.
+## API principal
 
-## Tech stack
+- `GET /api/equipos`
+- `GET /api/equipos/[id]`
+- `GET /api/partidos`
+- `GET /api/partidos/[id]`
+- `GET /api/partidos/[id]/comentarios`
+- `POST /api/partidos/[id]/comentarios`
+- `GET /api/resultados`
+- `GET /api/clasificacion`
+- `POST /api/auth/register`
 
-| Layer | Technology |
-| ----- | ---------- |
-| Framework | **Next.js** (App Router), **React**, **TypeScript** |
-| ORM / DB | **Prisma** → **PostgreSQL** (hosted on **Supabase**) |
-| Auth | **Auth.js** (NextAuth) |
-| Validation | **Zod** |
-| UI | **shadcn/ui**, **Tailwind CSS** |
-| Media | **Supabase** (Storage + service role on server) |
-| Deploy | **Vercel** (app) + **Supabase** (DB, auth, storage) |
+## Requisitos previos
 
-## Architecture (high level)
+- Node.js LTS.
+- Proyecto de Supabase enlazado con el repo.
 
-```text
-Browser → Next.js (RSC / Server Actions / Route Handlers)
-               → Prisma → Supabase Postgres
-               → Auth.js (sessions)
-               → Supabase Storage (uploads from server)
-```
-
-- **Public read** endpoints expose teams/matches for visitors.
-- **Mutations** (comments, backoffice CRUD, uploads) run **on the server** with validation and role checks.
-
-## Prerequisites
-
-- **Node.js** LTS (same major as used in class)
-- A **Supabase** project (Postgres + Auth + Storage buckets configured)
-- **Git**
-
-## Getting started
-
-### 1. Clone and install
+## Instalacion
 
 ```bash
-git clone https://github.com/YOUR_USER/champions-saas.git
-cd champions-saas
 npm install
 ```
 
-### 2. Environment variables
+## Configuracion de entorno
 
-Copy the example file and fill in your values:
+1. Copia `.env.example` a `.env`.
+2. Rellena valores reales de Supabase/Auth.
+
+Variables usadas:
+
+- `NEXTAUTH_URL`
+- `AUTH_SECRET`
+- `DATABASE_URL` (si usas Prisma en fases posteriores)
+- `DIRECT_URL` (si usas Prisma en fases posteriores)
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY` (opcional para storage/admin server)
+
+## Migraciones
 
 ```bash
-cp .env.example .env
+npx supabase db push
 ```
 
-Never commit `.env`. See **Environment** below for variable meanings.
-
-### 3. Database
-
-```bash
-npx prisma migrate dev
-npm run db:seed   # if defined — or use the seed command from package.json (e.g. tsx prisma/seed.ts)
-```
-
-### 4. Run locally
+## Arranque
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+## Credenciales demo
 
-## Environment
-
-| Variable | Description |
-| -------- | ----------- |
-| `DATABASE_URL` | Supabase **pooled** Postgres URL (Prisma client) |
-| `DIRECT_URL` | Supabase **direct** URL (migrations) |
-| `NEXTAUTH_URL` | App URL (e.g. `http://localhost:3000` in dev) |
-| `NEXTAUTH_SECRET` | Strong random secret for Auth.js |
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-only key for Storage / admin APIs |
-| `SUPABASE_BUCKET_AVATARS` | Bucket name for user avatars |
-| `SUPABASE_BUCKET_TEAMS` | Bucket name for team shields |
-| `SUPABASE_BUCKET_MATCHES` | Bucket name for match images |
-
-Full template belongs in **`.env.example`** (without secrets).
+- Usuario: `demo@champions.local` / `demo123`
+- Editor: `editor@champions.local` / `editor123`
+- Admin: `admin@champions.local` / `admin123`
 
 ## Scripts
 
-| Command | Purpose |
-| ------- | ------- |
-| `npm run dev` | Start Next.js in development |
-| `npm run build` | Production build |
-| `npm run start` | Start production server |
-| `npm run lint` | ESLint |
-| `npx prisma studio` | Browse database (local) |
+- `npm run dev`
+- `npm run build`
+- `npm run start`
+- `npm run lint`
 
-(Add `db:seed` / test commands to match your `package.json`.)
+## Checklist IA7
 
-## Verification checklist (IA7)
-
-- [ ] Visitor can use **teams** and **matches** public routes with DB-backed data.
-- [ ] User can **register** and **log in** without errors.
-- [ ] Registered user can **comment** on a match.
-- [ ] `EDITOR` can manage teams/matches/media; `ADMIN` can manage users/roles.
-- [ ] App deploys to **Vercel**; production env vars set safely.
-
-## Deployment
-
-1. Push to GitHub; connect the repo to **Vercel**.
-2. Set all production environment variables in Vercel (same keys as locally).
-3. Run migrations against production DB (`prisma migrate deploy` in CI or manually from a trusted environment).
-
-## Roadmap / known limitations
-
-- Billing / subscriptions not included (course scope).
-- Rate limiting and advanced observability left for future iterations.
-
-## Academic context
-
-Developed as **IA7 — Kates Serveis web** within **M0613** (DAW2). Product discovery and backlog: **Scrum** (session S19); implementation: guided sprints (session S20), as part of **M0613** (DAW2).
-
-## License
-
-Educational use — specify your license here (e.g. MIT, or “all rights reserved” for classroom-only work).
-
-## Author
-
-**Your Name** — [Portfolio](https://YOUR-PORTFOLIO.com) · [LinkedIn](https://www.linkedin.com/in/YOUR_PROFILE)
+- [x] Visitor usa rutas publicas de equipos/partidos con datos de BD.
+- [x] Usuario puede registrarse y loguearse sin errores.
+- [x] Usuario autenticado puede comentar en partidos.
+- [x] `EDITOR` mantiene equipos/partidos y `ADMIN` gestiona usuarios/roles.
+- [ ] Despliegue en Vercel y variables de produccion (pendiente segun entorno final).

@@ -1,4 +1,4 @@
-export type UserRole = "user";
+export type UserRole = "user" | "editor" | "admin";
 
 export type Team = {
   id: string;
@@ -36,6 +36,7 @@ export type AppUser = {
   name: string;
   email: string;
   passwordHash: string;
+  avatarUrl: string | null;
   role: UserRole;
   createdAt: string;
 };

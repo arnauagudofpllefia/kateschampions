@@ -1,6 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { validarCredenciales } from "@/lib/db/users";
+import { leerUsuarioPorId, validarCredenciales } from "@/lib/db/users";
+import type { UserRole } from "@/lib/db/types";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -34,6 +35,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: user.name,
           role: user.role,
+          avatarUrl: user.avatarUrl,
         };
       },
     }),
@@ -43,6 +45,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.role = user.role;
         token.sub = user.id;
+        token.avatarUrl = user.avatarUrl ?? null;
       }
 
       return token;
@@ -50,7 +53,9 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.sub ?? "";
-        session.user.role = (token.role as "user") ?? "user";
+        session.user.role = (token.role as UserRole) ?? "user";
+        const dbUser = token.sub ? await leerUsuarioPorId(token.sub) : null;
+        session.user.avatarUrl = dbUser?.avatarUrl ?? token.avatarUrl ?? null;
       }
 
       return session;
