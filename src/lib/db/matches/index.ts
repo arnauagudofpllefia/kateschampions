@@ -1,6 +1,32 @@
+import { createClient } from "@/lib/supabase/server";
 import { leerEquipoPorId } from "@/lib/db/teams";
 import type { Match } from "@/lib/db/types";
-import { leerDB } from "../file";
+
+type MatchRow = {
+  id: string;
+  matchday: number;
+  day: string;
+  time: string;
+  home_team_id: string;
+  away_team_id: string;
+  home_score: number | null;
+  away_score: number | null;
+  status: "played" | "upcoming";
+};
+
+function mapMatchRow(row: MatchRow): Match {
+  return {
+    id: row.id,
+    matchday: row.matchday,
+    day: row.day,
+    time: row.time,
+    homeTeamId: row.home_team_id,
+    awayTeamId: row.away_team_id,
+    homeScore: row.home_score,
+    awayScore: row.away_score,
+    status: row.status,
+  };
+}
 
 export type PartidoEnriquecido = Match & {
   homeTeamName: string;
@@ -25,14 +51,21 @@ async function enriquecerPartido(match: Match): Promise<PartidoEnriquecido> {
 }
 
 export async function leerPartidos(): Promise<PartidoEnriquecido[]> {
-  const db = await leerDB();
-  const enriched = await Promise.all(db.matches.map((match) => enriquecerPartido(match)));
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("matches")
+    .select("id,matchday,day,time,home_team_id,away_team_id,home_score,away_score,status")
+    .order("day", { ascending: true })
+    .order("time", { ascending: true });
 
-  return enriched.sort((a, b) => {
-    const dateA = `${a.day}T${a.time}`;
-    const dateB = `${b.day}T${b.time}`;
-    return dateA.localeCompare(dateB);
-  });
+  if (error) {
+    throw new Error(`leerPartidos: ${error.message}`);
+  }
+
+  const matches = (data ?? []).map((row) => mapMatchRow(row as MatchRow));
+  const enriched = await Promise.all(matches.map((match) => enriquecerPartido(match)));
+
+  return enriched;
 }
 
 export async function leerPartidosPorDia(): Promise<Record<string, PartidoEnriquecido[]>> {
