@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { z } from "zod";
 import { authOptions } from "@/lib/auth/options";
 import { hasRequiredRole } from "@/lib/auth/roles";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import type { UserRole } from "@/lib/db/types";
 
 const updateRoleSchema = z.object({
@@ -32,11 +32,15 @@ type UserRow = {
 export default async function AdminBackofficePage() {
   await assertAdminRole();
 
-  const supabase = await createClient();
-  const { data } = await supabase
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
     .from("users")
     .select("id,name,email,role,created_at")
     .order("created_at", { ascending: false });
+
+  if (error) {
+    throw new Error(`AdminBackofficePage: ${error.message}`);
+  }
 
   const users = (data ?? []) as UserRow[];
 
@@ -54,7 +58,7 @@ export default async function AdminBackofficePage() {
       return;
     }
 
-    const supabaseClient = await createClient();
+    const supabaseClient = createAdminClient();
     await supabaseClient
       .from("users")
       .update({ role: parsed.data.role })
@@ -70,6 +74,9 @@ export default async function AdminBackofficePage() {
 
       <section className="section-card p-5 text-slate-100">
         <div className="mt-2 space-y-3">
+          {users.length === 0 ? (
+            <p className="inner-panel p-4 text-sm text-slate-300">No hay usuarios disponibles para gestionar.</p>
+          ) : null}
           {users.map((user) => (
             <form key={user.id} action={updateRoleAction} className="inner-panel flex flex-wrap items-end justify-between gap-3 p-4">
               <input type="hidden" name="id" value={user.id} />

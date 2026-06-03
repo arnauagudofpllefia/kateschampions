@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --brand-bg: #060d18;
-  --brand-text: #e8edf8;
-  --brand-accent: #f8d66d;
-  --panel: #0f1a2f;
-  --panel-soft: #13233f;
-  --line: rgba(255, 255, 255, 0.16);
+  --brand-bg: #071021;
+  --brand-text: #eaf0fb;
+  --brand-accent: #f5c35f;
+  --brand-accent-2: #ffd98d;
+  --panel: #101e39;
+  --panel-soft: #172846;
+  --line: rgba(255, 255, 255, 0.15);
 }
 
 @theme inline {
@@ -18,9 +19,12 @@
 
 body {
   position: relative;
-  background: var(--brand-bg);
+  background: radial-gradient(circle at 8% 10%, #1b2e52 0, transparent 42%),
+    radial-gradient(circle at 88% -10%, #5f4318 0, transparent 30%),
+    linear-gradient(165deg, #050b17 0%, #081227 38%, #122646 100%);
   color: var(--brand-text);
   font-family: var(--font-body), sans-serif;
+  letter-spacing: 0.01em;
 }
 
 a,
@@ -33,45 +37,69 @@ button {
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(circle at 12% 18%, #1f3156 0, transparent 44%),
-    radial-gradient(circle at 88% 8%, #5c4514 0, transparent 34%),
-    radial-gradient(circle at 75% 70%, #143966 0, transparent 42%),
-    linear-gradient(160deg, #050b14 0%, #0a1324 42%, #142849 100%);
+    radial-gradient(circle at 12% 18%, #2a446f 0, transparent 46%),
+    radial-gradient(circle at 88% 8%, #8f6622 0, transparent 31%),
+    radial-gradient(circle at 75% 70%, #153f74 0, transparent 43%),
+    linear-gradient(160deg, #040a14 0%, #091327 38%, #13294f 100%);
+  opacity: 0.95;
 }
 
 .hero-panel {
   background:
-    linear-gradient(132deg, rgba(18, 35, 66, 0.9), rgba(44, 35, 16, 0.74)),
+    linear-gradient(132deg, rgba(17, 35, 67, 0.94), rgba(72, 52, 16, 0.8)),
     var(--panel);
-  box-shadow: 0 28px 56px rgba(0, 0, 0, 0.34);
+  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.42);
   animation: panel-enter 550ms ease-out both;
+}
+
+.home-hero-image {
+  position: relative;
+  overflow: hidden;
+  background-image:
+    linear-gradient(120deg, rgba(6, 16, 31, 0.9), rgba(7, 16, 30, 0.72)),
+    url("/images/home-bg.svg");
+  background-size: cover;
+  background-position: center;
+}
+
+.home-hero-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.36));
+  pointer-events: none;
+}
+
+.home-hero-image > * {
+  position: relative;
+  z-index: 1;
 }
 
 .pro-shell {
   width: 100%;
-  max-width: 1120px;
+  max-width: 1160px;
   margin-inline: auto;
-  padding: 2.25rem 1rem 3.2rem;
+  padding: 2.4rem 1rem 3.4rem;
 }
 
 .section-card {
-  border: 1px solid var(--line);
-  border-radius: 1rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
-  backdrop-filter: blur(5px);
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
+  border: 0;
+  border-radius: 1.1rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+  backdrop-filter: blur(4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
 }
 
 .inner-panel {
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 0;
   border-radius: 0.8rem;
-  background: linear-gradient(180deg, #10203a, #0b1730);
+  background: linear-gradient(180deg, rgba(17, 34, 63, 0.74), rgba(14, 26, 49, 0.72));
 }
 
 .page-title {
   font-family: var(--font-title), sans-serif;
-  letter-spacing: 0.03em;
-  font-size: clamp(2.2rem, 3.3vw, 3.2rem);
+  letter-spacing: 0.05em;
+  font-size: clamp(2.25rem, 3.6vw, 3.4rem);
   line-height: 0.95;
 }
 
@@ -87,9 +115,9 @@ button {
 
 .badge-pro {
   border-radius: 999px;
-  border: 1px solid rgba(248, 214, 109, 0.52);
-  background: rgba(248, 214, 109, 0.14);
-  color: #f8d66d;
+  border: 1px solid rgba(245, 195, 95, 0.52);
+  background: rgba(245, 195, 95, 0.13);
+  color: var(--brand-accent-2);
   padding: 0.23rem 0.72rem;
   font-size: 0.72rem;
   font-weight: 700;
@@ -99,10 +127,11 @@ button {
 
 .btn-primary {
   border-radius: 999px;
-  background: linear-gradient(120deg, #f8d66d, #e9bc3f);
+  background: linear-gradient(120deg, #f5c35f, #e5aa31);
   color: #0a1120;
   font-weight: 800;
   padding: 0.57rem 1.2rem;
+  box-shadow: 0 10px 20px rgba(245, 195, 95, 0.22);
 }
 
 .btn-primary:hover {
@@ -119,8 +148,8 @@ button {
 }
 
 .btn-ghost:hover {
-  border-color: rgba(248, 214, 109, 0.6);
-  color: #f8d66d;
+  border-color: rgba(245, 195, 95, 0.7);
+  color: var(--brand-accent-2);
 }
 
 .table-pro thead {
@@ -140,24 +169,53 @@ button {
 }
 
 .form-shell {
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: 1.2rem;
-  background: linear-gradient(165deg, rgba(19, 36, 66, 0.95), rgba(15, 24, 43, 0.88));
-  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(165deg, rgba(20, 40, 73, 0.96), rgba(11, 21, 41, 0.9));
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.26);
 }
 
 .input-pro {
   width: 100%;
   border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: linear-gradient(180deg, #0f1c35, #0c162d);
+  border: 0;
+  background: linear-gradient(180deg, #10203c, #0b162e);
   padding: 0.58rem 0.82rem;
   outline: none;
 }
 
 .input-pro:focus {
-  border-color: rgba(248, 214, 109, 0.8);
-  box-shadow: 0 0 0 3px rgba(248, 214, 109, 0.16);
+  border-color: rgba(245, 195, 95, 0.82);
+  box-shadow: 0 0 0 3px rgba(245, 195, 95, 0.16);
+}
+
+.header-shell {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(9, 17, 33, 0.92), rgba(8, 16, 31, 0.76));
+  backdrop-filter: blur(10px);
+}
+
+.nav-chip {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.42rem 0.88rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #dbe4f7;
+  background: transparent;
+}
+
+.nav-chip-active {
+  color: var(--brand-accent-2);
+  background: rgba(245, 195, 95, 0.14);
+}
+
+.mobile-menu-panel {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.9rem;
+  background: linear-gradient(180deg, rgba(16, 30, 57, 0.95), rgba(10, 20, 38, 0.95));
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.32);
 }
 
 main section,

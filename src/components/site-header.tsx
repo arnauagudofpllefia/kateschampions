@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { hasRequiredRole } from "@/lib/auth/roles";
@@ -17,68 +18,47 @@ const links = [
 export function SiteHeader() {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const avatarSrc = session?.user?.avatarUrl ?? "/avatars/default-user.svg";
   const role = session?.user?.role;
   const canAccessEditor = role ? hasRequiredRole(role, "editor") : false;
   const canAccessAdmin = role ? hasRequiredRole(role, "admin") : false;
 
+  const headerLinks = [
+    ...links,
+    ...(canAccessEditor ? [{ href: "/backoffice/editor", label: "Editor" }] : []),
+    ...(canAccessAdmin ? [{ href: "/backoffice/admin", label: "Admin" }] : []),
+  ];
+
   return (
-    <header className="sticky top-0 z-30 border-b border-white/15 bg-[#091224]/80 backdrop-blur-xl">
+    <header className="header-shell sticky top-0 z-30">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-2 text-[#f8d66d]">
-          <span className="badge-pro">UCL</span>
-          <span className="font-title text-2xl leading-none tracking-wider">Champions Hub</span>
+          <Image
+            src="/images/infochampions-logo.svg"
+            alt="InfoChampions logo"
+            width={32}
+            height={32}
+            className="h-8 w-8"
+            priority
+          />
+          <span className="font-title text-2xl leading-none tracking-wider">InfoChampions</span>
         </Link>
 
-        <nav className="hidden items-center gap-2 text-sm font-semibold text-slate-100 md:flex">
-          {links.map((link) => (
+        <nav className="hidden items-center gap-2 md:flex">
+          {headerLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`rounded-full border px-3 py-1.5 ${
+              className={`nav-chip ${
                 pathname === link.href
-                  ? "border-[#f8d66d]/60 bg-[#f8d66d]/15 text-[#f8d66d]"
-                  : "border-white/20 hover:border-[#f8d66d]/65 hover:text-[#f8d66d]"
+                  ? "nav-chip-active"
+                  : "hover:text-[#f5d48a]"
               }`}
             >
               {link.label}
             </Link>
           ))}
-          {canAccessEditor ? (
-            <Link
-              href="/backoffice/editor"
-              className={`rounded-full border px-3 py-1.5 ${
-                pathname === "/backoffice/editor"
-                  ? "border-[#f8d66d]/60 bg-[#f8d66d]/15 text-[#f8d66d]"
-                  : "border-white/20 hover:border-[#f8d66d]/65 hover:text-[#f8d66d]"
-              }`}
-            >
-              Backoffice Editor
-            </Link>
-          ) : null}
-          {canAccessAdmin ? (
-            <Link
-              href="/backoffice/admin"
-              className={`rounded-full border px-3 py-1.5 ${
-                pathname === "/backoffice/admin"
-                  ? "border-[#f8d66d]/60 bg-[#f8d66d]/15 text-[#f8d66d]"
-                  : "border-white/20 hover:border-[#f8d66d]/65 hover:text-[#f8d66d]"
-              }`}
-            >
-              Backoffice Admin
-            </Link>
-          ) : null}
-          {session?.user ? (
-            <Link
-              href="/perfil"
-              className={`rounded-full border px-3 py-1.5 ${
-                pathname === "/perfil"
-                  ? "border-[#f8d66d]/60 bg-[#f8d66d]/15 text-[#f8d66d]"
-                  : "border-white/20 hover:border-[#f8d66d]/65 hover:text-[#f8d66d]"
-              }`}
-            >
-              Perfil
-            </Link>
-          ) : null}
         </nav>
 
         <div className="flex items-center gap-2 text-sm text-slate-200">
@@ -90,20 +70,14 @@ export function SiteHeader() {
                 aria-label="Ir al perfil"
                 title={`${session.user.name} (${session.user.role.toUpperCase()})`}
               >
-                {session.user.avatarUrl ? (
-                  <Image
-                    src={session.user.avatarUrl}
-                    alt={`Avatar de ${session.user.name}`}
-                    width={40}
-                    height={40}
-                    unoptimized
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <span className="font-semibold text-[#f8d66d]">
-                    {session.user.name?.slice(0, 1).toUpperCase() ?? "U"}
-                  </span>
-                )}
+                <Image
+                  src={avatarSrc}
+                  alt={`Avatar de ${session.user.name}`}
+                  width={40}
+                  height={40}
+                  unoptimized
+                  className="h-full w-full object-cover"
+                />
               </Link>
               <button
                 type="button"
@@ -123,60 +97,41 @@ export function SiteHeader() {
               </Link>
             </>
           )}
+
+          <button
+            type="button"
+            className="nav-chip md:hidden"
+            onClick={() => setMobileOpen((value) => !value)}
+            aria-expanded={mobileOpen}
+            aria-label="Abrir menu"
+          >
+            Menu
+          </button>
         </div>
       </div>
 
-      <nav className="mx-auto flex w-full max-w-6xl flex-wrap gap-2 px-4 pb-3 md:hidden sm:px-6">
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={`rounded-full border px-3 py-1 text-xs font-semibold ${
-              pathname === link.href
-                ? "border-[#f8d66d]/60 bg-[#f8d66d]/15 text-[#f8d66d]"
-                : "border-white/20 text-slate-100"
-            }`}
-          >
-            {link.label}
-          </Link>
-        ))}
-        {canAccessEditor ? (
-          <Link
-            href="/backoffice/editor"
-            className={`rounded-full border px-3 py-1 text-xs font-semibold ${
-              pathname === "/backoffice/editor"
-                ? "border-[#f8d66d]/60 bg-[#f8d66d]/15 text-[#f8d66d]"
-                : "border-white/20 text-slate-100"
-            }`}
-          >
-            Editor
-          </Link>
-        ) : null}
-        {canAccessAdmin ? (
-          <Link
-            href="/backoffice/admin"
-            className={`rounded-full border px-3 py-1 text-xs font-semibold ${
-              pathname === "/backoffice/admin"
-                ? "border-[#f8d66d]/60 bg-[#f8d66d]/15 text-[#f8d66d]"
-                : "border-white/20 text-slate-100"
-            }`}
-          >
-            Admin
-          </Link>
-        ) : null}
-        {session?.user ? (
-          <Link
-            href="/perfil"
-            className={`rounded-full border px-3 py-1 text-xs font-semibold ${
-              pathname === "/perfil"
-                ? "border-[#f8d66d]/60 bg-[#f8d66d]/15 text-[#f8d66d]"
-                : "border-white/20 text-slate-100"
-            }`}
-          >
-            Perfil
-          </Link>
-        ) : null}
-      </nav>
+      {mobileOpen ? (
+        <div className="mx-auto w-full max-w-6xl px-4 pb-3 sm:px-6 md:hidden">
+          <div className="mobile-menu-panel p-3">
+            <nav className="grid gap-2">
+              {headerLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`rounded-lg px-3 py-2 text-sm font-semibold ${
+                    pathname === link.href
+                      ? "bg-[#f5c35f]/14 text-[#f5d48a]"
+                      : "text-slate-100"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 }

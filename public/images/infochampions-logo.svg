@@ -1,0 +1,21 @@
+<svg width="144" height="144" viewBox="0 0 144 144" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="InfoChampions logo">
+  <defs>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffe2a3" />
+      <stop offset="100%" stop-color="#e6ab39" />
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#142649" />
+      <stop offset="100%" stop-color="#0c1932" />
+    </linearGradient>
+  </defs>
+
+  <circle cx="72" cy="72" r="66" fill="url(#core)" />
+  <circle cx="72" cy="72" r="58" fill="none" stroke="url(#ring)" stroke-width="6" />
+
+  <path d="M48 40h48l-8 18h-32z" fill="url(#ring)" />
+  <path d="M54 62h36l-4 36H58z" fill="#f4c567" />
+  <circle cx="72" cy="87" r="6" fill="#0f1f3c" />
+
+  <path d="M35 109h74" stroke="#f4c567" stroke-opacity="0.7" stroke-width="4" stroke-linecap="round" />
+</svg>

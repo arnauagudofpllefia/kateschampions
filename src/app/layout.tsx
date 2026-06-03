@@ -16,8 +16,8 @@ const bodyFont = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Champions Hub",
-  description: "Informacion, equipos, partidos y clasificacion de Champions.",
+  title: "InfoChampions",
+  description: "Informacion, equipos, partidos y clasificacion en InfoChampions.",
 };
 
 export default function RootLayout({

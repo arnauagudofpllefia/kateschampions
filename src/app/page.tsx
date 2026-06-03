@@ -13,9 +13,9 @@ export default async function HomePage() {
 
   return (
     <main className="pro-shell">
-      <section className="hero-panel rounded-3xl border border-white/20 p-6 sm:p-10">
+      <section className="hero-panel home-hero-image rounded-3xl border border-white/20 p-6 sm:p-10">
         <p className="font-title text-lg uppercase tracking-[0.2em] text-[#f8d66d]">
-          UEFA Champions Dashboard
+          InfoChampions
         </p>
         <h1 className="mt-2 text-5xl leading-none font-title text-slate-100 sm:text-6xl">
           Todo en una sola pantalla
